@@ -12,6 +12,7 @@ class MyApp extends StatelessWidget {
       home:const  Expenses(),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        useMaterial3: true,
         primaryColor: Colors.blue,
       ),
     );

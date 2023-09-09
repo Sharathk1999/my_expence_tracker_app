@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_expence_tracker/widgets/expenses_list/expenses_list.dart';
+import 'package:my_expence_tracker/widgets/new_expense.dart';
 
 import '../models/expense.dart';
 
@@ -26,20 +27,57 @@ class _ExpensesState extends State<Expenses> {
       category: Category.entertainment,
     ),
   ];
+
+  void _addExpense(Expense expense) {
+    setState(() {
+      _registeredExpenses.add(expense);
+    });
+  }
+
+  void _removeExpense(Expense expense) {
+    setState(() {
+      _registeredExpenses.remove(expense);
+    });
+    
+  }
+
+  void _openAddExpenseOverlay() {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      builder: (ctx) => NewExpense(onAddExpense: _addExpense),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    Widget mainContent =const Center(
+      child:  Text('No expenses found, Start adding some'),
+    );
+
+    if (_registeredExpenses.isNotEmpty) {
+      mainContent = ExpenseList(
+        expenses: _registeredExpenses,
+        onRemovedExpense: _removeExpense,
+      );
+    }
     return Scaffold(
       appBar: AppBar(
-        title:const Text("Expense Tracker"),
+        centerTitle: true,
+        title: const Text("Expense Tracker"),
         actions: [
-          IconButton(onPressed: (){}, icon:const Icon(Icons.add))
+          IconButton(
+              onPressed: () {
+                _openAddExpenseOverlay();
+              },
+              icon: const Icon(Icons.add))
         ],
       ),
       body: Column(
         children: [
           const Text('Chart Here'),
           Expanded(
-            child: ExpenseList(expenses: _registeredExpenses),
+            child: mainContent,
           ),
         ],
       ),
