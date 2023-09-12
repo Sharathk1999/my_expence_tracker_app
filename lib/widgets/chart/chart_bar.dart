@@ -7,7 +7,7 @@ class ChartBar extends StatelessWidget {
   });
 
   final double fill;
-
+ 
   @override
   Widget build(BuildContext context) {
     final isDarkMode =
